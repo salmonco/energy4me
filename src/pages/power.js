@@ -193,12 +193,20 @@ export default function Power() {
                       <span>
                         {v.label}: {item[v.prop]}
                       </span>
-                      {v.isPrice && (
+                      {v.cnt && (
                         <div className="flex gap-[4px] items-center">
                           <span>·</span>
                           <span className="font-[Pretendard-Medium]">
                             약{" "}
                             {Math.round(parseInt(String(item[v.prop])) * 0.1)}원
+                          </span>
+                          <span>·</span>
+                          <span className="font-[Pretendard-Medium]">
+                            연간{" "}
+                            {Math.round(
+                              parseInt(String(item[v.prop])) * 0.1 * cnt
+                            )}
+                            원
                           </span>
                         </div>
                       )}
