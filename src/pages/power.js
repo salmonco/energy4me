@@ -27,10 +27,10 @@ import useIntersect from "@hooks/useIntersect";
 - 진공청소기 : EEP_05_LIST
 */
 const POWER_GRADE = {
-  EEP_20_LIST: [1],
-  EEP_13_LIST: [1],
   EEP_06_LIST: [1],
   EEP_11_LIST: [1],
+  EEP_20_LIST: [1],
+  EEP_13_LIST: [1],
   EEP_08_LIST: [1],
   EEP_19_LIST: [1],
   EEP_01_LIST: [1, 2],
@@ -46,10 +46,10 @@ export default function Power() {
 
   const [sortOpen, setSortOpen] = useState(false);
   const SORT_MENU = [
-    { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
-    { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
     { idx: 2, label: "일반세탁기", path: "EEP_01_LIST" },
     { idx: 3, label: "드럼세탁기", path: "EEP_06_LIST" },
+    { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
+    { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
     { idx: 4, label: "진공청소기", path: "EEP_05_LIST" },
     { idx: 5, label: "공기청정기", path: "EEP_08_LIST" },
     { idx: 6, label: "제습기", path: "EEP_19_LIST" },
@@ -186,10 +186,22 @@ export default function Power() {
                   {PROP.find(
                     (p) => p.idx === SORT_MENU[selectedSort].path
                   ).data.map((v) => (
-                    <div key={Math.random()}>
+                    <div
+                      key={Math.random()}
+                      className="flex gap-[4px] items-center"
+                    >
                       <span>
                         {v.label}: {item[v.prop]}
                       </span>
+                      {v.isPrice && (
+                        <div className="flex gap-[4px] items-center">
+                          <span>·</span>
+                          <span className="font-[Pretendard-Medium]">
+                            약{" "}
+                            {Math.round(parseInt(String(item[v.prop])) * 0.1)}원
+                          </span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

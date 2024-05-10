@@ -6,10 +6,10 @@ import useIntersect from "@hooks/useIntersect";
 
 // 가전제품
 export const SORT_MENU = [
-  { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
-  { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
   { idx: 2, label: "일반세탁기", path: "EEP_01_LIST" },
   { idx: 3, label: "드럼세탁기", path: "EEP_06_LIST" },
+  { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
+  { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
   { idx: 4, label: "진공청소기", path: "EEP_05_LIST" },
   { idx: 5, label: "공기청정기", path: "EEP_08_LIST" },
   { idx: 6, label: "제습기", path: "EEP_19_LIST" },
@@ -28,9 +28,25 @@ const FILTER_MENU = [
 // 공통: 업체명칭, 모델명, 출하예정일, 효율등급
 export const PROP = [
   {
+    idx: "EEP_01_LIST",
+    data: [
+      { label: "표준세탁용량", prop: "STANDARD_CAPA" },
+      { label: "세탁 소비전력량", prop: "CONS_PWR", isPrice: true },
+      { label: "소비자효율등급지표", prop: "R" },
+    ],
+  },
+  {
+    idx: "EEP_06_LIST",
+    data: [
+      { label: "표준세탁용량", prop: "STANDARD_CAPA" },
+      { label: "세탁 소비전력량", prop: "CONS_PWR", isPrice: true },
+      { label: "소비자효율등급지표", prop: "R" },
+    ],
+  },
+  {
     idx: "EEP_20_LIST",
     data: [
-      { label: "월간소비전력량", prop: "MONTH_CONS_PWR" },
+      { label: "월간 소비전력량", prop: "MONTH_CONS_PWR", isPrice: true },
       { label: "용량", prop: "CAPA" },
     ],
   },
@@ -38,30 +54,14 @@ export const PROP = [
     idx: "EEP_13_LIST",
     data: [
       { label: "김치저장실 유효내용적", prop: "KIMCHI_AVAIL_CAPA" },
-      { label: "월간소비전력량", prop: "MONTH_CONS_PWR" },
+      { label: "월간 소비전력량", prop: "MONTH_CONS_PWR", isPrice: true },
       { label: "소비자효율등급지표", prop: "R" },
-    ],
-  },
-  {
-    idx: "EEP_01_LIST",
-    data: [
-      { label: "표준세탁용량", prop: "STANDARD_CAPA" },
-      { label: "세탁시 소비전력량", prop: "CONS_PWR" },
-      { label: "소비자효율등급지표", prop: "R" },
-    ],
-  },
-  {
-    idx: "EEP_06_LIST",
-    data: [
-      { label: "선풍기날개 지름", prop: "FAN_DIAMETER" },
-      { label: "풍량효율", prop: "EFFIC" },
-      { label: "최저소비 효율기준", prop: "CONS_EFFIC" },
     ],
   },
   {
     idx: "EEP_05_LIST",
     data: [
-      { label: "측정소비전력", prop: "MEAS_CONS_PWR" },
+      { label: "측정소비전력", prop: "MEAS_CONS_PWR", isPrice: true },
       { label: "최대흡입일률", prop: "MAX_CAPA" },
     ],
   },
@@ -70,8 +70,8 @@ export const PROP = [
     data: [
       { label: "표준사용면적", prop: "STANDARD_CONS_AREA" },
       { label: "탈취효율", prop: "DEODORIZATION_EFFIC" },
-      { label: "대기전력", prop: "WAIT_PWR" },
-      { label: "소비전력", prop: "CONS_PWR" },
+      { label: "대기전력", prop: "WAIT_PWR", isPrice: true },
+      { label: "소비전력", prop: "CONS_PWR", isPrice: true },
       { label: "최대무부하 모드소비전력", prop: "MAX_WAIT_CONS_PWR" },
     ],
   },
@@ -86,9 +86,9 @@ export const PROP = [
   {
     idx: "EEP_11_LIST",
     data: [
-      { label: "정격소비전력", prop: "PROP_CONS_PWR" },
+      { label: "정격소비전력", prop: "PROP_CONS_PWR", isPrice: true },
       { label: "최대가용인원", prop: "MAX_CAPA" },
-      { label: "대기전력", prop: "WAIT_PWR" },
+      { label: "대기전력", prop: "WAIT_PWR", isPrice: true },
     ],
   },
 ];
@@ -277,10 +277,22 @@ export default function Search() {
                   {PROP.find(
                     (p) => p.idx === SORT_MENU[selectedSort].path
                   ).data.map((v) => (
-                    <div key={Math.random()}>
+                    <div
+                      key={Math.random()}
+                      className="flex gap-[4px] items-center"
+                    >
                       <span>
                         {v.label}: {item[v.prop]}
                       </span>
+                      {v.isPrice && (
+                        <div className="flex gap-[4px] items-center">
+                          <span>·</span>
+                          <span className="font-[Pretendard-Medium]">
+                            약{" "}
+                            {Math.round(parseInt(String(item[v.prop])) * 0.1)}원
+                          </span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
