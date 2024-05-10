@@ -3,11 +3,11 @@ import BottomTabNav from "@components/bottomTabNav";
 /*
 에너지소비효율
 [1등급]
-- 냉장고 : EEP_12_LIST (상업용), EEP_20_LIST
+- 냉장고 : EEP_12_LIST (상업용, 보류), EEP_20_LIST
 - 김치냉장고 : EEP_13_LIST
 - 드럼세탁기 : EEP_06_LIST
 - 벽걸이 에어컨
-- 냉온수기 : EEP_16_LIST, EEP_30_LIST (순간식)
+- 냉온수기 : EEP_16_LIST, EEP_30_LIST (순간식) (보류)
 - 전기밭솥 : EEP_11_LIST
 - 공기청정기 : EEP_08_LIST
 - TV
