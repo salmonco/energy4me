@@ -3,103 +3,107 @@ import Link from "next/link";
 import BottomTabNav from "@components/bottomTabNav";
 import Image from "next/image";
 
+// 가전제품
+export const SORT_MENU = [
+  { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
+  { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
+  { idx: 2, label: "일반세탁기", path: "EEP_01_LIST" },
+  { idx: 3, label: "드럼세탁기", path: "EEP_06_LIST" },
+  { idx: 4, label: "진공청소기", path: "EEP_05_LIST" },
+  { idx: 5, label: "공기청정기", path: "EEP_08_LIST" },
+  { idx: 6, label: "제습기", path: "EEP_19_LIST" },
+  { idx: 7, label: "전기밥솥", path: "EEP_11_LIST" },
+];
+
+// 에너지소비효율 등급
+const FILTER_MENU = [
+  { idx: 0, label: "1등급" },
+  { idx: 1, label: "2등급" },
+  { idx: 2, label: "3등급" },
+  { idx: 3, label: "4등급" },
+  { idx: 4, label: "5등급" },
+];
+
+// 공통: 업체명칭, 모델명, 출하예정일, 효율등급
+export const PROP = [
+  {
+    idx: "EEP_20_LIST",
+    data: [
+      { label: "월간소비전력량", prop: "MONTH_CONS_PWR" },
+      { label: "용량", prop: "CAPA" },
+    ],
+  },
+  {
+    idx: "EEP_13_LIST",
+    data: [
+      { label: "김치저장실 유효내용적", prop: "KIMCHI_AVAIL_CAPA" },
+      { label: "월간소비전력량", prop: "MONTH_CONS_PWR" },
+      { label: "소비자효율등급지표", prop: "R" },
+    ],
+  },
+  {
+    idx: "EEP_01_LIST",
+    data: [
+      { label: "표준세탁용량", prop: "STANDARD_CAPA" },
+      { label: "세탁시 소비전력량", prop: "CONS_PWR" },
+      { label: "소비자효율등급지표", prop: "R" },
+    ],
+  },
+  {
+    idx: "EEP_06_LIST",
+    data: [
+      { label: "선풍기날개 지름", prop: "FAN_DIAMETER" },
+      { label: "풍량효율", prop: "EFFIC" },
+      { label: "최저소비 효율기준", prop: "CONS_EFFIC" },
+    ],
+  },
+  {
+    idx: "EEP_05_LIST",
+    data: [
+      { label: "측정소비전력", prop: "MEAS_CONS_PWR" },
+      { label: "최대흡입일률", prop: "MAX_CAPA" },
+    ],
+  },
+  {
+    idx: "EEP_08_LIST",
+    data: [
+      { label: "표준사용면적", prop: "STANDARD_CONS_AREA" },
+      { label: "탈취효율", prop: "DEODORIZATION_EFFIC" },
+      { label: "대기전력", prop: "WAIT_PWR" },
+      { label: "소비전력", prop: "CONS_PWR" },
+      { label: "최대무부하 모드소비전력", prop: "MAX_WAIT_CONS_PWR" },
+    ],
+  },
+  {
+    idx: "EEP_19_LIST",
+    data: [
+      { label: "제습효율", prop: "DHF_EFFIC" },
+      { label: "정격제습능력", prop: "RATE_DHF_ABTY" },
+      { label: "월간에너지비용", prop: "YEAR_COST" },
+    ],
+  },
+  {
+    idx: "EEP_11_LIST",
+    data: [
+      { label: "정격소비전력", prop: "PROP_CONS_PWR" },
+      { label: "최대가용인원", prop: "MAX_CAPA" },
+      { label: "대기전력", prop: "WAIT_PWR" },
+    ],
+  },
+];
+
 export default function Search() {
   const [list, setList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
 
   const [sortOpen, setSortOpen] = useState(false);
-  const SORT_MENU = [
-    { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
-    { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
-    { idx: 2, label: "일반세탁기", path: "EEP_01_LIST" },
-    { idx: 3, label: "드럼세탁기", path: "EEP_06_LIST" },
-    { idx: 4, label: "진공청소기", path: "EEP_05_LIST" },
-    { idx: 5, label: "공기청정기", path: "EEP_08_LIST" },
-    { idx: 6, label: "제습기", path: "EEP_19_LIST" },
-    { idx: 7, label: "전기밥솥", path: "EEP_11_LIST" },
-  ];
   const [selectedSort, setSelectedSort] = useState(0);
   const sortIdx = useRef(null);
 
   const [filterOpen, setFilterOpen] = useState(false);
-  const FILTER_MENU = [
-    { idx: 0, label: "1등급" },
-    { idx: 1, label: "2등급" },
-    { idx: 2, label: "3등급" },
-    { idx: 3, label: "4등급" },
-    { idx: 4, label: "5등급" },
-  ];
   const [selectedFilter, setSelectedFilter] = useState(null);
   const filterIdx = useRef(null);
   const [isFilterApply, setIsFilterApply] = useState(false);
-
-  // 공통: 업체명칭, 모델명, 출하예정일, 효율등급
-  const PROP = [
-    {
-      idx: "EEP_20_LIST",
-      data: [
-        { label: "월간소비전력량", prop: "MONTH_CONS_PWR" },
-        { label: "용량", prop: "CAPA" },
-      ],
-    },
-    {
-      idx: "EEP_13_LIST",
-      data: [
-        { label: "김치저장실 유효내용적", prop: "KIMCHI_AVAIL_CAPA" },
-        { label: "월간소비전력량", prop: "MONTH_CONS_PWR" },
-        { label: "소비자효율등급지표", prop: "R" },
-      ],
-    },
-    {
-      idx: "EEP_01_LIST",
-      data: [
-        { label: "표준세탁용량", prop: "STANDARD_CAPA" },
-        { label: "세탁시 소비전력량", prop: "CONS_PWR" },
-        { label: "소비자효율등급지표", prop: "R" },
-      ],
-    },
-    {
-      idx: "EEP_06_LIST",
-      data: [
-        { label: "선풍기날개 지름", prop: "FAN_DIAMETER" },
-        { label: "풍량효율", prop: "EFFIC" },
-        { label: "최저소비 효율기준", prop: "CONS_EFFIC" },
-      ],
-    },
-    {
-      idx: "EEP_05_LIST",
-      data: [
-        { label: "측정소비전력", prop: "MEAS_CONS_PWR" },
-        { label: "최대흡입일률", prop: "MAX_CAPA" },
-      ],
-    },
-    {
-      idx: "EEP_08_LIST",
-      data: [
-        { label: "표준사용면적", prop: "STANDARD_CONS_AREA" },
-        { label: "탈취효율", prop: "DEODORIZATION_EFFIC" },
-        { label: "대기전력", prop: "WAIT_PWR" },
-        { label: "소비전력", prop: "CONS_PWR" },
-        { label: "최대무부하 모드소비전력", prop: "MAX_WAIT_CONS_PWR" },
-      ],
-    },
-    {
-      idx: "EEP_19_LIST",
-      data: [
-        { label: "제습효율", prop: "DHF_EFFIC" },
-        { label: "정격제습능력", prop: "RATE_DHF_ABTY" },
-        { label: "월간에너지비용", prop: "YEAR_COST" },
-      ],
-    },
-    {
-      idx: "EEP_11_LIST",
-      data: [
-        { label: "정격소비전력", prop: "PROP_CONS_PWR" },
-        { label: "최대가용인원", prop: "MAX_CAPA" },
-        { label: "대기전력", prop: "WAIT_PWR" },
-      ],
-    },
-  ];
 
   const getData = async () => {
     try {
@@ -212,54 +216,62 @@ export default function Search() {
       </div>
 
       <div className="flex flex-col gap-[16px]">
-        {(isFilterApply ? filteredList : list).map((item) => (
-          <Link
-            key={Math.random()}
-            href={getSearchUrl(item.ENTE_TERM, item.MODEL_TERM)}
-            target="blank"
-          >
-            <div className="p-[16px] rounded-[5px] bg-white flex flex-col gap-[8px]">
-              <div className="flex gap-[8px] items-center font-[Pretendard-Medium]">
-                <span>{item.MODEL_TERM}</span>
-                <span>·</span>
-                <span>{item.ENTE_TERM}</span>
-                {/* <span>제조원: {item.MANUFAC_MAN_TERM}</span> */}
+        {(isFilterApply ? filteredList : list).length ? (
+          (isFilterApply ? filteredList : list).map((item) => (
+            <Link
+              key={Math.random()}
+              href={getSearchUrl(item.ENTE_TERM, item.MODEL_TERM)}
+              target="blank"
+            >
+              <div className="p-[16px] rounded-[5px] bg-white flex flex-col gap-[8px]">
+                <div className="flex gap-[8px] items-center font-[Pretendard-Medium]">
+                  <span>{item.MODEL_TERM}</span>
+                  <span>·</span>
+                  <span>{item.ENTE_TERM}</span>
+                  {/* <span>제조원: {item.MANUFAC_MAN_TERM}</span> */}
+                </div>
+                <div className="flex gap-[8px] items-center font-[Pretendard-Medium]">
+                  <span
+                    className={`${
+                      item.GRADE === 1
+                        ? "text-[#8EC63F]"
+                        : item.GRADE === 2
+                        ? "text-[#D5E14D]"
+                        : item.GRADE === 3
+                        ? "text-[#FFF001]"
+                        : item.GRADE === 4
+                        ? "text-[#FAA634]"
+                        : "text-[#EF3125]"
+                    }`}
+                  >
+                    {item.GRADE}등급
+                  </span>
+                  <span>·</span>
+                  <span className="text-[1.2rem] text-[#7F828C]">
+                    {item.SHIP_PRARG_DD}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-[4px] text-[1.4rem]">
+                  {PROP.find(
+                    (p) => p.idx === SORT_MENU[selectedSort].path
+                  ).data.map((v) => (
+                    <div key={Math.random()}>
+                      <span>
+                        {v.label}: {item[v.prop]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-[8px] items-center font-[Pretendard-Medium]">
-                <span
-                  className={`${
-                    item.GRADE === 1
-                      ? "text-[#8EC63F]"
-                      : item.GRADE === 2
-                      ? "text-[#D5E14D]"
-                      : item.GRADE === 3
-                      ? "text-[#FFF001]"
-                      : item.GRADE === 4
-                      ? "text-[#FAA634]"
-                      : "text-[#EF3125]"
-                  }`}
-                >
-                  {item.GRADE}등급
-                </span>
-                <span>·</span>
-                <span className="text-[1.2rem] text-[#7F828C]">
-                  {item.SHIP_PRARG_DD}
-                </span>
-              </div>
-              <div className="flex flex-col gap-[4px] text-[1.4rem]">
-                {PROP.find(
-                  (p) => p.idx === SORT_MENU[selectedSort].path
-                ).data.map((v) => (
-                  <div key={Math.random()}>
-                    <span>
-                      {v.label}: {item[v.prop]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))
+        ) : (
+          <div className="pt-[200px] flex justify-center items-center">
+            <p className="leading-[3rem] text-[1.4rem] text-[#7F828C] text-center">
+              제품 데이터가 없어요.
+            </p>
+          </div>
+        )}
       </div>
 
       <div
