@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import BottomTabNav from "@components/bottomTabNav";
 import Image from "next/image";
+import useIntersect from "@hooks/useIntersect";
 
 // 가전제품
 export const SORT_MENU = [
@@ -93,6 +94,10 @@ export const PROP = [
 ];
 
 export default function Search() {
+  const [loading, setLoading] = useState(false);
+  const [isLastPage, setIsLastPage] = useState(false);
+  const page = useRef(1);
+
   const [list, setList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
 
@@ -107,22 +112,32 @@ export default function Search() {
 
   const getData = async () => {
     try {
+      setLoading(true); // 데이터 요청 시작 시 로딩 상태 설정
       const res = await fetch(
-        `/public-api/B553530/eep/${SORT_MENU[selectedSort].path}?serviceKey=${process.env.NEXT_PUBLIC_API_KEY}&apiType=json`
+        `/public-api/B553530/eep/${SORT_MENU[selectedSort].path}?serviceKey=${process.env.NEXT_PUBLIC_API_KEY}&apiType=json&pageNo=${page.current}`
       );
       const json = await res.json();
       const item = json.response.body.items.item;
-      setList(item);
+      setList((prev) => [...prev, ...item]);
 
       if (selectedFilter !== null) {
         const filteredList = item.filter(
           (v) => +v.GRADE === selectedFilter + 1
         );
-        setFilteredList(filteredList);
+        setFilteredList((prev) => [...prev, ...filteredList]);
       }
+      if (item.length === 0) setIsLastPage(true);
     } catch (e) {
       console.log(e);
+    } finally {
+      setLoading(false); // 데이터 요청 완료 시 로딩 상태 제거
     }
+  };
+
+  const initPage = () => {
+    page.current = 1;
+    setIsLastPage(false);
+    setList([]);
   };
 
   const getSearchUrl = (str, model) => {
@@ -156,7 +171,7 @@ export default function Search() {
     if (sortOpen) return;
     const isOn = selectedSort !== sortIdx.current;
     if (isOn) {
-      // initPage();
+      initPage();
       getData();
       sortIdx.current = selectedSort;
     }
@@ -175,8 +190,15 @@ export default function Search() {
       );
       setFilteredList(filteredList);
     }
-    // initPage();
   }, [filterOpen]);
+
+  // useIntersect훅에 타겟 감지 시 실행해야할 콜백함수 전달
+  const ref = useIntersect((entry, { threshold = 1 }) => {
+    // 불러올 데이터가 더 이상 없는지 체크
+    if (loading || isLastPage) return;
+    page.current++;
+    getData();
+  });
 
   return (
     <div className="flex flex-col gap-[14px] pt-[28px] pb-[80px] px-[16px] bg-[#EFF1F4] overflow-y-auto">
@@ -272,6 +294,11 @@ export default function Search() {
             </p>
           </div>
         )}
+        <div className={`w-full flex justify-center`} ref={ref}>
+          {loading && (
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-brand"></div>
+          )}
+        </div>
       </div>
 
       <div
