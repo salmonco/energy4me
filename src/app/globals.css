@@ -2,32 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("/fonts/Pretendard-Regular.otf");
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@font-face {
+  font-family: "Pretendard-Medium";
+  src: url("/fonts/Pretendard-Medium.otf");
+}
+
+@font-face {
+  font-family: "Pretendard-SemiBold";
+  src: url("/fonts/Pretendard-SemiBold.otf");
+}
+
+@font-face {
+  font-family: "Pretendard-Bold";
+  src: url("/fonts/Pretendard-Bold.otf");
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Pretendard-Regular", sans-serif;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(245, 245, 245);
+  height: 100vh;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-size: 1.6rem;
+  width: 100%;
+  max-width: 400px;
+  min-width: 350px;
+  background-color: white;
+  position: relative;
+  height: 100vh;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+input:focus {
+  outline: none;
+}
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div,
+main {
+  height: 100%;
 }
