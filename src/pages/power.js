@@ -2,7 +2,7 @@ import BottomTabNav from "@components/bottomTabNav";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { PROP } from "./search";
+import { PROP, SORT_MENU } from "./search";
 import useIntersect from "@hooks/useIntersect";
 
 /*
@@ -45,16 +45,6 @@ export default function Power() {
   const [list, setList] = useState([]);
 
   const [sortOpen, setSortOpen] = useState(false);
-  const SORT_MENU = [
-    { idx: 2, label: "일반세탁기", path: "EEP_01_LIST" },
-    { idx: 3, label: "드럼세탁기", path: "EEP_06_LIST" },
-    { idx: 0, label: "냉장고", path: "EEP_20_LIST" },
-    { idx: 1, label: "김치냉장고", path: "EEP_13_LIST" },
-    { idx: 4, label: "진공청소기", path: "EEP_05_LIST" },
-    { idx: 5, label: "공기청정기", path: "EEP_08_LIST" },
-    { idx: 6, label: "제습기", path: "EEP_19_LIST" },
-    { idx: 7, label: "전기밥솥", path: "EEP_11_LIST" },
-  ];
   const [selectedSort, setSelectedSort] = useState(0);
   const sortIdx = useRef(null);
 
@@ -204,7 +194,7 @@ export default function Power() {
                           <span className="font-[Pretendard-Medium]">
                             연간{" "}
                             {Math.round(
-                              parseInt(String(item[v.prop])) * 0.1 * cnt
+                              parseInt(String(item[v.prop])) * 0.1 * v.cnt
                             )}
                             원
                           </span>

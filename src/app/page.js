@@ -1,20 +1,19 @@
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="bg-brand flex flex-col justify-around p-[42px]">
+    <main className="bg-black flex flex-col justify-around p-[42px]">
       <div className="flex flex-col gap-[12px]">
-        {/* <Image
+        <Image
           alt=""
-          src={require("@images/symbol.svg")}
-          width={70}
-          height={70}
-          priority
-          className="shadow-gray"
-        /> */}
-        <p className="font-b text-[2.2rem] text-[#F9FAFC]">
-          나를 위한 고효율 제품 검색
+          src={require("@images/logo-black.svg")}
+          width={200}
+          height={200}
+          className="h-auto"
+        />
+        <p className="font-[Pretendard-Bold] text-[2.2rem] text-[#F9FAFC]">
+          고효율 제품 검색
           <br />
           에너지포미
         </p>
